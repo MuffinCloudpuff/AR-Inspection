@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务详情 - AR巡检</title>
+    <!-- 添加Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --accent-color: #34a853;
+            --danger-color: #ea4335;
+            --warning-color: #fbbc05;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ef 100%);
+            margin: 0;
+            padding: 0;
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .page-header h1 i {
+            margin-right: 0.75rem;
+        }
+
+        .subtitle {
+            color: #5f6368;
+            font-size: 1rem;
+        }
+
+        .task-info {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .task-info h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .task-meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .task-meta-label {
+            font-weight: 500;
+            margin-right: 0.5rem;
+            color: #5f6368;
+        }
+
+        .task-meta-value {
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-todo {
+            background-color: rgba(251, 188, 5, 0.1);
+            color: #e37400;
+        }
+
+        .status-progress {
+            background-color: rgba(66, 133, 244, 0.1);
+            color: #174ea6;
+        }
+
+        .status-done {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: #137333;
+        }
+
+        .status-badge i {
+            margin-right: 0.25rem;
+        }
+
+        .photo-gallery {
+            margin-top: 2rem;
+        }
+
+        .photo-gallery h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .photos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .photo-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-image {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-info {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .photo-time {
+            color: #5f6368;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .location-heading {
+            font-size: 1.1rem;
+            margin: 2rem 0 1rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        footer {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #666;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .photos-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        .no-photos {
+            padding: 2rem;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            color: #5f6368;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-glasses"></i>
+            <span>AR巡检</span>
+        </div>
+        <div>
+            <a href="#" style="color: var(--primary-color); text-decoration: none; margin-left: 1rem;">
+                <i class="fas fa-user-circle"></i> 管理员
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-clipboard-list"></i> 任务详情报告</h1>
+                <p class="subtitle">查看AR巡检任务的详细执行情况和图片记录</p>
+            </div>
+
+            <div class="task-info">
+                <h2>{{ mission.task }}</h2>
+                <div class="task-meta">
+                    <div class="task-meta-item">
+                        <span class="task-meta-label">任务ID:</span>
+                        <span class="task-meta-value">{{ mission.id }}</span>
+                    </div>
+                    <div class="task-meta-item">
+                        <span class="task-meta-label">执行人:</span>
+                        <span class="task-meta-value">{{ mission.name }}</span>
+                    </div>
+                    <div class="task-meta-item">
+                        <span class="task-meta-label">状态:</span>
+                        <span class="task-meta-value">
+                            {% if mission.state == "未完成" %}
+                                <div class="status-badge status-todo">
+                                    <i class="fas fa-clock"></i> 未完成
+                                </div>
+                            {% elif mission.state == "进行中" %}
+                                <div class="status-badge status-progress">
+                                    <i class="fas fa-spinner"></i> 进行中
+                                </div>
+                            {% else %}
+                                <div class="status-badge status-done">
+                                    <i class="fas fa-check-circle"></i> 已完成
+                                </div>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按位置分组显示照片 -->
+            {% regroup photos by place as photo_places %}
+            
+            {% for place_group in photo_places %}
+                {% if place_group.grouper %}
+                    <h3 class="location-heading">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        位置: {{ place_group.grouper }}
+                    </h3>
+                {% else %}
+                    <h3 class="location-heading">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        位置: 未指定
+                    </h3>
+                {% endif %}
+                
+                <div class="photo-gallery">
+                    <div class="photos-container">
+                        {% for photo in place_group.list %}
+                            <div class="photo-card">
+                                <img src="/media/{{ photo.image_file }}" class="photo-image" alt="巡检照片">
+                                <div class="photo-info">
+                                    <div>{{ photo.name }}</div>
+                                    <div class="photo-time">{{ photo.time_code|date:'Y-m-d H:i' }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="no-photos">
+                    <i class="fas fa-camera" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                    <p>该任务还没有上传任何照片</p>
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <a href="/mission/list_mission/" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> 返回任务列表
+                </a>
+                {% if mission.state == "已完成" %}
+                <a href="/mission/report/{{ mission.id }}/" class="btn">
+                    <i class="fas fa-file-alt"></i> 查看任务报告
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 RayNeo AR巡检 · 智能数据管理平台</p>
+    </footer>
+</body>
+</html> 

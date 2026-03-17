@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语音列表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>语音列表</h1>
+
+
+    <button onclick="window.location.href='http://localhost:8000/audio/audios/'">添加</button>
+        <table id="audio-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>时间</th>
+                    <th>语音</th>
+                    <th>下载</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for audio in audios %}
+                <tr>
+                <form name="audio_form" action="/audio/delete/" method="post">
+                    {% csrf_token %}
+                    <td>{{ audio.id }}</td>
+                    <td>{{ audio.name }}</td>
+                    <td>{{ audio.time_code }}</td>
+{#                    <td>{{ audio.audio_file }}</td>#}
+{#                    <td><a href="{{ audio.audio_file.url }}">{{ audio.audio_file.name }}</a></td>#}
+                    <td><a href="{{ audio.audio_file.url }}">{{ audio.filename }}</a></td>
+                    <td><a href="{{ audio.audio_file.url }}" download="{{ audio.audio_file.name }}">下载</a></td>
+                    <td style="display:none;"><input name="id" value="{{ audio.id }}"></td>
+                    <td><button name="del" value="del" onclick="submit()">删除</button></td>
+                </form>
+                </tr>
+                <!-- 语音记录将在这里动态生成 -->
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <p>
+        <a href="/" class="button">返回首页</a>
+    </div>
+
+</body>
+</html>

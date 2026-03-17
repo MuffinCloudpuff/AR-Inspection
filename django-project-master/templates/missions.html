@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建任务 - AR巡检</title>
+    <!-- 添加Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --accent-color: #34a853;
+            --danger-color: #ea4335;
+            --warning-color: #fbbc05;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ef 100%);
+            margin: 0;
+            padding: 0;
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 580px;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        h1 {
+            color: var(--dark-color);
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        h1 i {
+            margin-right: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .subtitle {
+            color: #5f6368;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #5f6368;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #fff;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        .status-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .status-badge i {
+            margin-right: 0.4rem;
+            font-size: 0.8rem;
+        }
+
+        .status-todo {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .status-progress {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+        }
+
+        .status-done {
+            background-color: #e6f4ea;
+            color: var(--accent-color);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: #1766d0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #f0f7ff;
+            box-shadow: none;
+        }
+
+        footer {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #666;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-glasses"></i>
+            <span>AR巡检</span>
+        </div>
+        <div>
+            <a href="#" style="color: var(--primary-color); text-decoration: none; margin-left: 1rem;">
+                <i class="fas fa-user-circle"></i> 管理员
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-tasks"></i> 创建任务</h1>
+                <p class="subtitle">添加AR巡检任务并分配执行人员</p>
+            </div>
+
+            <form method="POST" action="/mission/submit_mission_info">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="task">任务名称</label>
+                    <input type="text" id="task" name="task" placeholder="请输入任务名称或描述" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">执行人</label>
+                    <input type="text" id="name" name="name" placeholder="请输入执行人姓名">
+                    <p style="margin-top: 0.4rem; font-size: 0.85rem; color: #5f6368;">
+                        <i class="fas fa-info-circle"></i> 可选，留空则稍后分配
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">任务状态</label>
+                    <select id="state" name="state" required>
+                        <option value="未完成" selected>未完成</option>
+                        <option value="进行中">进行中</option>
+                        <option value="已完成">已完成</option>
+                    </select>
+                    
+                    <div class="status-badges" style="margin-top: 1rem;">
+                        <div class="status-badge status-todo">
+                            <i class="fas fa-clock"></i> 未完成
+                        </div>
+                        <div class="status-badge status-progress">
+                            <i class="fas fa-spinner"></i> 进行中
+                        </div>
+                        <div class="status-badge status-done">
+                            <i class="fas fa-check-circle"></i> 已完成
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/mission/list_mission/" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> 返回列表
+                    </a>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-plus-circle"></i> 创建任务
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 RayNeo AR巡检 · 智能数据管理平台</p>
+    </footer>
+</body>
+</html>

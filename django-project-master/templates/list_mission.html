@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务列表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>任务列表</h1>
+        
+     
+    <button onclick="window.location.href='http://localhost:8000/mission/missions/'">添加</button>
+        <table id="student-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>任务</th>
+                    <th>执行人</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for mission in missions %}
+                <tr>
+                <form name="mission_form" action="/mission/delete/" method="post">
+                    {% csrf_token %} 
+                    <td>{{ mission.id }}</td>
+                    <td>{{ mission.task }}</td>
+                    <td>{{ mission.name }}</td>
+                    <td>{{ mission.state }}</td>
+                    <td style="display:none;"><input name="id" value="{{ mission.id }}"></td>
+                    <td>
+                        <a href="/mission/detail/{{ mission.id }}/" style="margin-right: 10px;">查看</a>
+                        {% if mission.state == "已完成" %}
+                        <a href="/mission/report/{{ mission.id }}/" style="margin-right: 10px; color: #28a745;">报告</a>
+                        {% endif %}
+                        <button name="del" value="del" onclick="submit()">删除</button>
+                    </td>
+                </form>
+                </tr>
+                <!-- 学生记录将在这里动态生成 -->
+            {% endfor %}
+            </tbody>
+        </table>
+        
+        <p>
+        <a href="/" class="button">返回首页</a>
+    </div>
+
+</body>
+</html>

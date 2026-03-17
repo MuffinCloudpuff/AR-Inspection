@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务报告 - AR巡检</title>
+    <!-- 添加Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --accent-color: #34a853;
+            --danger-color: #ea4335;
+            --warning-color: #fbbc05;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ef 100%);
+            margin: 0;
+            padding: 0;
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .page-header h1 i {
+            margin-right: 0.75rem;
+        }
+
+        .subtitle {
+            color: #5f6368;
+            font-size: 1rem;
+        }
+
+        .task-info {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .task-info h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .task-meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .task-meta-label {
+            font-weight: 500;
+            margin-right: 0.5rem;
+            color: #5f6368;
+        }
+
+        .task-meta-value {
+            font-weight: 600;
+        }
+
+        .location-heading {
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+            padding: 0.8rem 1.5rem;
+            color: var(--primary-color);
+            background-color: #f1f7fe;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+        }
+        
+        .location-heading i {
+            margin-right: 0.5rem;
+        }
+
+        .photo-gallery {
+            margin-top: 1rem;
+        }
+
+        .photos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .photo-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-info {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .photo-time {
+            color: #5f6368;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .actions {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .no-photos {
+            padding: 3rem;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            color: #5f6368;
+            margin-top: 2rem;
+        }
+
+        footer {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #666;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+
+        .report-timestamp {
+            font-size: 0.9rem;
+            color: #5f6368;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+            
+            header, footer, .actions {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .photo-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            
+            .location-heading {
+                break-before: always;
+                page-break-before: always;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .photos-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-glasses"></i>
+            <span>AR巡检</span>
+        </div>
+        <div>
+            <a href="#" style="color: var(--primary-color); text-decoration: none; margin-left: 1rem;">
+                <i class="fas fa-user-circle"></i> 管理员
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-file-alt"></i> 任务报告</h1>
+                <p class="subtitle">AR巡检任务执行照片报告</p>
+                <p class="report-timestamp">报告生成时间: {% now "Y-m-d H:i:s" %}</p>
+            </div>
+
+            <div class="task-info">
+                <h2>{{ mission.task }}</h2>
+                <div class="task-meta">
+                    <div class="task-meta-item">
+                        <span class="task-meta-label">任务ID:</span>
+                        <span class="task-meta-value">{{ mission.id }}</span>
+                    </div>
+                    <div class="task-meta-item">
+                        <span class="task-meta-label">执行人:</span>
+                        <span class="task-meta-value">{{ mission.name }}</span>
+                    </div>
+                    <div class="task-meta-item">
+                        <span class="task-meta-label">状态:</span>
+                        <span class="task-meta-value">
+                            <div class="status-badge status-done">
+                                <i class="fas fa-check-circle"></i> {{ mission.state }}
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按位置分组显示照片 -->
+            {% if photo_groups %}
+                {% for place, photos in photo_groups.items %}
+                    <div class="location-heading">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        位置: {{ place }}
+                    </div>
+                    
+                    <div class="photo-gallery">
+                        <div class="photos-container">
+                            {% for photo in photos %}
+                                <div class="photo-card">
+                                    <img src="{{ photo.image_url }}" class="photo-image" alt="巡检照片">
+                                    <div class="photo-info">
+                                        <div>{{ photo.name }}</div>
+                                        <div class="photo-time">{{ photo.time_code }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-photos">
+                    <i class="fas fa-camera" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                    <p>该任务还没有上传任何照片</p>
+                </div>
+            {% endif %}
+
+            <div class="actions">
+                <div>
+                    <button onclick="window.print()" class="btn">
+                        <i class="fas fa-print"></i> 打印报告
+                    </button>
+                </div>
+                <div>
+                    <a href="/mission/list_mission/" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> 返回任务列表
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 RayNeo AR巡检 · 智能数据管理平台</p>
+    </footer>
+</body>
+</html> 

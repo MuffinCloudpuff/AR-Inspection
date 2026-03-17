@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人员列表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>人员列表</h1>
+        
+     
+    <button onclick="window.location.href='http://localhost:8000/test/students/'">添加</button>
+        <table id="student-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                <form name="student_form" action="/test/delete/" method="post">
+                    {% csrf_token %} 
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.age }}</td>
+                    <td>{{ student.gender }}</td>
+                    <td style="display:none;"><input name="id" value="{{ student.id }}"></td>
+                    <td><button name="del" value="del" onclick="submit()">删除</button></td>
+                </form>
+                </tr>
+                <!-- 学生记录将在这里动态生成 -->
+            {% endfor %}
+            </tbody>
+        </table>
+        
+        <p>
+        <a href="/" class="button">返回首页</a>
+    </div>
+    
+    <!--script>
+        function loadStudents() {
+            fetch('/test/api/students/')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector('#student-table tbody');
+                    tbody.innerHTML = ''; // 清空现有内容
+                    data.forEach(student => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${student.id}</td>
+                            <td>${student.name}</td>
+                            <td>${student.age}</td>
+                            <td>${student.gender}</td>
+                            <td><button onclick="deleteStudent(${student.id})">删除</button></td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching students:', error));
+        }
+
+        function deleteStudent(studentId) {
+            if (confirm("确定要删除这个学生吗？")) {
+                fetch(`/test/api/students/${studentId}/`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("学生删除成功！");
+                            loadStudents(); // 重新加载学生列表
+                        } else {
+                            alert("删除失败，请重试。");
+                        }
+                    })
+                    .catch(error => console.error('Error deleting student:', error));
+            }
+        }
+
+        // 页面加载时加载学生列表
+        window.onload = loadStudents;
+    </script-->
+</body>
+</html>
