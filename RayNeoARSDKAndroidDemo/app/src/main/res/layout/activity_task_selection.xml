@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.activity.TaskSelectionActivity">
+
+    <!-- 左侧界面 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/leftScreen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightScreen"
+        app:layout_constraintWidth_percent="0.45">
+
+        <!-- 页面标题 -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择要执行的任务"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 任务容器 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/taskContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- 任务按钮容器 -->
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/taskDetailCard"
+                app:layout_constraintHeight_percent="0.6">
+
+                <LinearLayout
+                    android:id="@+id/taskButtonContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp" />
+            </ScrollView>
+
+            <!-- 任务详情卡片 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/taskDetailCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="#333333"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintTop_toBottomOf="@id/scrollView"
+                app:layout_constraintBottom_toTopOf="@id/startButton">
+
+                <TextView
+                    android:id="@+id/taskDetailText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="点击任务即可直接执行" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- 开始按钮 -->
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="刷新任务"
+                android:textSize="18sp"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/taskDetailCard"
+                app:layout_constraintBottom_toTopOf="@id/backButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 返回按钮 -->
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:text="返回"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 加载中视图 -->
+        <FrameLayout
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <ProgressBar
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:indeterminate="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="正在获取任务列表..."
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- 错误视图 -->
+        <LinearLayout
+            android:id="@+id/errorView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/errorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获取任务失败"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/retryButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:text="重试"
+                android:textSize="16sp"
+                android:layout_marginTop="24dp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 右侧界面 - 复制左侧界面 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rightScreen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/leftScreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.45">
+
+        <!-- 页面标题 -->
+        <TextView
+            android:id="@+id/titleTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择要执行的任务"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 任务容器 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/taskContainerRight"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/titleTextRight"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- 任务按钮容器 -->
+            <ScrollView
+                android:id="@+id/scrollViewRight"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/taskDetailCardRight"
+                app:layout_constraintHeight_percent="0.6">
+
+                <LinearLayout
+                    android:id="@+id/taskButtonContainerRight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp" />
+            </ScrollView>
+
+            <!-- 任务详情卡片 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/taskDetailCardRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="#333333"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintTop_toBottomOf="@id/scrollViewRight"
+                app:layout_constraintBottom_toTopOf="@id/startButtonRight">
+
+                <TextView
+                    android:id="@+id/taskDetailTextRight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="点击任务即可直接执行" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- 开始按钮 -->
+            <Button
+                android:id="@+id/startButtonRight"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="刷新任务"
+                android:textSize="18sp"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="24dp"
+                android:focusable="false"
+                android:clickable="false"
+                app:layout_constraintTop_toBottomOf="@id/taskDetailCardRight"
+                app:layout_constraintBottom_toTopOf="@id/backButtonRight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 返回按钮 -->
+            <Button
+                android:id="@+id/backButtonRight"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:text="返回"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp"
+                android:focusable="false"
+                android:clickable="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 加载中视图 -->
+        <FrameLayout
+            android:id="@+id/loadingViewRight"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/titleTextRight"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <ProgressBar
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:indeterminate="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="正在获取任务列表..."
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- 错误视图 -->
+        <LinearLayout
+            android:id="@+id/errorViewRight"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/titleTextRight"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/errorTextRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获取任务失败"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/retryButtonRight"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:text="重试"
+                android:textSize="16sp"
+                android:focusable="false"
+                android:clickable="false"
+                android:layout_marginTop="24dp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout> 
